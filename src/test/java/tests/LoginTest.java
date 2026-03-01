@@ -16,7 +16,7 @@ public class LoginTest extends BaseTest {
 		loginPage.open();
 		loginPage.login("standard_user", "secret_sauce");
 
-		Assert.assertTrue(loginPage.isLoginSuccessful(), "Login was not successful!");
+		Assert.assertTrue(loginPage.isLoginSuccessful(), "Login is not successful");
 	}
 
 	@Test
@@ -27,6 +27,7 @@ public class LoginTest extends BaseTest {
 		loginPage.open();
 		loginPage.login("standard_user", "wrong_password");
 
-		Assert.assertFalse(loginPage.isLoginSuccessful(), "Login should have failed but succeeded!");
+		Assert.assertTrue(loginPage.isErrorMessageDisplayed(),
+				"Expected error message was not displayed for invalid credentials.");
 	}
 }

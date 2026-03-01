@@ -1,6 +1,7 @@
 package framework.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,6 +18,7 @@ public class LoginPage {
 	private By passwordField = By.id("password");
 	private By loginButton = By.id("login-button");
 	private By inventoryPageTitle = By.className("title");
+	private By errorMessage = By.cssSelector("[data-test='error']");
 
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
@@ -45,7 +47,23 @@ public class LoginPage {
 		clickLogin();
 	}
 
-	public boolean isLoginSuccessful() {					//for Verification
-		return wait.until(ExpectedConditions.visibilityOfElementLocated(inventoryPageTitle)).isDisplayed();
+	// Positive validation
+	public boolean isLoginSuccessful() {
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(inventoryPageTitle));
+			return true;
+		} catch (TimeoutException e) {
+			return false;
+		}
+	}
+
+	// Negative validation
+	public boolean isErrorMessageDisplayed() {
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
+			return true;
+		} catch (TimeoutException e) {
+			return false;
+		}
 	}
 }
